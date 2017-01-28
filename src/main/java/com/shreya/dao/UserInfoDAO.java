@@ -16,4 +16,5 @@ public interface UserInfoDAO {
 
     public void addUser(UserInfo user);
 
+
 }

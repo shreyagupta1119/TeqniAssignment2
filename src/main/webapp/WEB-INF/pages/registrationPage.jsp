@@ -103,9 +103,9 @@
                 <!-- Password-->
                 <label class="control-label" for="password">Password*</label>
 
-                    <input type="password" id="password" minlength="4" name="password" size="30" placeholder="Password should be at least 6 characters"
+                    <input type="password" id="password" minlength="6" name="password" size="30" placeholder="Password should be at least 6 characters"
                            title="Password must contain at least one numeric digit, one uppercase and one lowercase letter"
-                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$" class="input-xlarge" onchange="checkPass()" required>
+                           pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,50}$" class="input-xlarge" onchange="checkPass()" required>
 
             </div>
 
@@ -183,7 +183,6 @@
                 // you can see the result from the console
                 // tab of the developer tools
                 $('#target').html(data.message);
-                console.log(data);
                 document.open();
                 document.write(data);
                 document.close();

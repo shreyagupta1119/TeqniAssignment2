@@ -1,15 +1,17 @@
 package com.shreya.dao.impl;
 
 import com.shreya.dao.UserInfoDAO;
-import com.shreya.mapper.UserInfoMapper;
 import com.shreya.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.support.*;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -27,23 +29,33 @@ public class UserInfoDAOImpl extends JdbcDaoSupport implements UserInfoDAO {
     @Override
     public void addUser(UserInfo user){
         String sql="insert into userinfo "+ "values(?,?,?,?,?)";
-        this.getJdbcTemplate().update(sql,user.getUsername(),user.getPassword(),user.getEmail(),user.getDob(),user.getDob());
+        this.getJdbcTemplate().update(sql,user.getUsername(),user.getEmail(),user.getPassword(),user.getDob(),user.getType());
     }
 
 
     @Override
     public UserInfo findUserInfo(String userName) {
-        String sql = "Select u.Username,u.Password,u.EmailId,u.DateOfBirth,u.type"//
-                + " from Users u where u.Username = ? ";
+        String sql = "Select username,email,password,dob,type"//
+                + " from userinfo where username = ? ";
 
-        Object[] params = new Object[] { userName };
-        UserInfoMapper mapper = new UserInfoMapper();
-        try {
-            UserInfo userInfo = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return userInfo;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        return this.getJdbcTemplate().query(sql, new Object[]{userName}, new ResultSetExtractor<UserInfo>(){
+            @Override
+            public UserInfo extractData(ResultSet rs) throws SQLException,
+                    DataAccessException {
+                if (rs.next()) {
+                    UserInfo user= new UserInfo();
+                    user.setUsername(rs.getString("username"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    user.setDob(rs.getDate("dob"));
+                    user.setType(rs.getString("type"));
+
+                    return user;
+                }
+                return null;
+            }
+
+        });
     }
 
     @Override
@@ -57,5 +69,7 @@ public class UserInfoDAOImpl extends JdbcDaoSupport implements UserInfoDAO {
 
         return roles;
     }
+
+
 
 }

@@ -3,8 +3,8 @@ package com.shreya.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import javax.persistence.Table;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -29,4 +29,6 @@ public class UserInfo {
         this.type=type;
 
     }
+
+
 }

@@ -58,16 +58,14 @@ public class MainController {
     }
 
 
-  /*  @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
 
         // After user login successfully.
         String userName = principal.getName();
-
-        System.out.println("User Name: "+ userName);
-
+        model.addAttribute("message",userInfoDAO.findUserInfo(userName));
         return "userInfoPage";
-    }*/
+    }
 
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
